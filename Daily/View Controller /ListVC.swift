@@ -9,16 +9,19 @@
 import UIKit
 
 class ListVC: UIViewController {
-    
+        
     var collectionView: UICollectionView!
     var controller = ListController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupViews()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
+    }
     
     // MARK: - Functions
     
@@ -48,6 +51,7 @@ class ListVC: UIViewController {
         view.addSubview(collectionView)
     }
     
+    
     @objc func addList() {
         let vc = AddListVC()
         vc.listController = self.controller
@@ -64,8 +68,8 @@ extension ListVC: UICollectionViewDelegate, UICollectionViewDataSource  {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ListCell.id, for: indexPath) as? ListCell else {return UICollectionViewCell()}
-        let item = controller.item(at: indexPath.row)
-        cell.configure(item: item)
+        let list = controller.item(at: indexPath.row)
+        cell.list = list
         return cell
     }
     
@@ -74,19 +78,10 @@ extension ListVC: UICollectionViewDelegate, UICollectionViewDataSource  {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         let list = controller.item(at: indexPath.row)
-        
-        let tasks = controller.tasksForList(at: indexPath.row)
-        
-        let taskVC = GenericTableViewController<Any, UITableViewCell>(items: tasks, id: "Cell", configure: { (cell: UITableViewCell, task) in
-            cell.textLabel?.text = task.title
-        }) { (task) in
-            self.controller.addTaskInList(task: task, list: list)
-            collectionView.reloadData()
-        }
-        
-        taskVC.title = controller.item(at: indexPath.row).title
+        let taskVC = TaskListVC()
+        taskVC.list = list
+        taskVC.listController = self.controller
         navigationController?.pushViewController(taskVC, animated: true)
         return
     }

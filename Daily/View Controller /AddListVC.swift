@@ -47,8 +47,7 @@ class AddListVC: UIViewController {
         titleField.textAlignment = .center
         titleField.placeholder = "Add title"
         titleField.becomeFirstResponder()
-        
-        navigationItem.addRight(self, .add, #selector(add))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .done, target: self, action: #selector(add))
         
         view.addSubview(imageView)
         view.addSubview(editButton)

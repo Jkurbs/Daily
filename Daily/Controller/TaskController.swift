@@ -12,8 +12,9 @@ import Foundation
 
 class TaskController {
     
-    var tasks = [Task(title: "Drink water", type: .health, done: false), Task(title: "Go to the gym", type: .health, done: true)]
-    var suggestion = [Task(title: "Run 1 mile", type: .health, done: false), Task(title: "Drink a smoothie", type: .health, done: true)]
+    var tasks = [Task]()
+    
+    var suggestions = [Task(title: "Run 1 mile", type: .health, done: false), Task(title: "Drink a smoothie", type: .health, done: true), Task(title: "Call someone", type: .work, done: false)]
 
     // Item Count
     var itemsCount: Int {
@@ -50,9 +51,5 @@ class TaskController {
     var tasksUndone: [Task] {
          let tasksDone = tasks.filter({!$0.done})
          return tasksDone
-    }
-    
-    var suggestions: [Task] {
-       return suggestion
     }
 }
