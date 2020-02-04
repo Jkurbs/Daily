@@ -24,10 +24,10 @@ class ListController {
     func initializeItems() {
         if !UserDefaults.standard.bool(forKey: .initializeLists) {
             UserDefaults.standard.set(true, forKey: .initializeLists)
-            lists = [List(title: "All Tasks", thumbnail: UIImage(named: "doc.plaintext"), type: .all, tasks: nil),
-                          List(title: "Personal", thumbnail: UIImage(named: "doc.plaintext"), type: .personal, tasks: nil),
-                          List(title: "Health", thumbnail: UIImage(named: "doc.plaintext"), type: .health, tasks: taskController.tasks),
-                          List(title: "Work", thumbnail: UIImage(named: "doc.plaintext"), type: .work, tasks: nil)]
+            lists = [List(title: "All Tasks", thumbnail: UIImage(systemName: "doc.plaintext"), type: .all, tasks: taskController.tasks),
+                          List(title: "Personal", thumbnail: UIImage(systemName: "doc.plaintext"), type: .personal, tasks: nil),
+                          List(title: "Health", thumbnail: UIImage(systemName: "doc.plaintext"), type: .health, tasks: nil),
+                          List(title: "Work", thumbnail: UIImage(systemName: "doc.plaintext"), type: .work, tasks: nil)]
             saveToPersistence()
         }
         /// Items are initialized, load items from persistence
@@ -64,13 +64,17 @@ class ListController {
     
     func tasksForList(at index: Int) -> [Task]? {
         let list = self.item(at: index)
-        let tasks = list.tasks?.filter({$0.type == list.type})
+        let tasks = list.tasks
         return tasks
+    }
+    
+    func addTaskInList(task: Task, list: List) {
+        list.tasks?.append(task)
+        saveToPersistence()
     }
 }
 
 extension ListController {
-
     
     // Persistence file url
     var fileURL: URL? {

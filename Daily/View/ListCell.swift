@@ -30,16 +30,11 @@ class ListCell: UICollectionViewCell {
     
     func setupViews() {
         
-        let height = contentView.frame.height - 20
+        let height = contentView.frame.height - 50
         imageView.frame = CGRect(x: 0, y: 15, width: height, height: height)
         imageView.center.x = contentView.center.x
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 5.0
-        imageView.layer.borderWidth = 0.5
-        imageView.backgroundColor = UIColor(white: 0.9, alpha: 1.0)
-        imageView.layer.borderColor = UIColor.lightGray.cgColor
-
                
        titleLabel.frame = CGRect(x: 0, y: height + 10, width: contentView.frame.width, height: 40)
        titleLabel.textAlignment = .center

@@ -10,16 +10,17 @@ import UIKit
 
 class GenericTableViewController<T, Cell: UITableViewCell>: UITableViewController {
     
-    var items: [T]?
-    var configure: (Cell, T) -> Void
-    var selectHandler: (T) -> Void
+    var items: [Task]?
+    var configure: (Cell, Task) -> Void
+    var selectHandler: (Task) -> Void
+    var listController = ListController()
     
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(items: [T]?, id: String, configure: @escaping (Cell, T) -> Void, selectHandler: @escaping (T) -> Void) {
+    init(items: [Task]?, id: String, configure: @escaping (Cell, Task) -> Void, selectHandler: @escaping (Task) -> Void) {
         self.items = items
         self.configure = configure
         self.selectHandler = selectHandler
@@ -31,9 +32,8 @@ class GenericTableViewController<T, Cell: UITableViewCell>: UITableViewControlle
         self.navigationItem.largeTitleDisplayMode = .always
     }
     
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1 
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -42,14 +42,25 @@ class GenericTableViewController<T, Cell: UITableViewCell>: UITableViewControlle
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! Cell
-        let item = (items?[indexPath.row])!
-        configure(cell, item)
+        cell.editingAccessoryType = .checkmark
+        let item = itemForSection(indexPath: indexPath)
+        configure(cell, item!)
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.deselectRow(at: indexPath, animated: true)
-//        let item = (items?[indexPath.row])!
-//        selectHandler(item)
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        if let item = itemForSection(indexPath: indexPath) {
+            selectHandler(item)
+        }
+        tableView.reloadData()
+    }
+    
+    
+    
+    func itemForSection(indexPath: IndexPath) -> Task? {
+        return items?[indexPath.row]
+       
     }
 }
