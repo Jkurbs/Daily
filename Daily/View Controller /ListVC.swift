@@ -77,9 +77,7 @@ extension ListVC: UICollectionViewDelegate, UICollectionViewDataSource  {
         let tasks = controller.tasksForList(at: indexPath.row)
         let taskVC = GenericTableViewController(items: tasks, id: "Cell", configure: { (cell: UITableViewCell, task) in
             cell.textLabel?.text = task.title
-        }) { (task) in
-            
-        }
+        }) { (task) in }
         
         taskVC.title = controller.item(at: indexPath.row).title
         navigationController?.pushViewController(taskVC, animated: true)
